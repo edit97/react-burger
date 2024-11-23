@@ -1,0 +1,10 @@
+.header{
+    max-width: 1240px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: auto;
+}
+.button{
+
+}
