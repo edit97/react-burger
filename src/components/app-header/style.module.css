@@ -1,0 +1,45 @@
+.header {
+    width: 100%;
+}
+
+.header_list {
+    width: 100%;
+    align-items: center;
+    display: grid;
+    margin: 0;
+    padding: 0;
+    grid-template-columns: max-content max-content 1fr max-content;
+    position: relative;
+    & {
+        a:last-child {
+            margin-left: auto;
+        }
+    }
+}
+
+.project_logo {
+    /*align-items: center;*/
+    /*display: flex;*/
+    /*justify-content: center;*/
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.menu_item {
+    cursor: pointer;
+    text-decoration: none;
+
+    button {
+        display: flex;
+        align-items: center;
+        color: white;
+        gap: 8px;
+
+        &:first-child {
+            padding-left: 0;
+        }
+    }
+
+}
+

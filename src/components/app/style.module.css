@@ -1,0 +1,17 @@
+.main {
+    max-width: 1240px;
+    min-height: 100vh;
+    margin: 0 auto;
+}
+
+.content{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+
+    & > div {
+        width: 50%;
+    }
+}
+
