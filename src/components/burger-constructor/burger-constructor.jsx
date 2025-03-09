@@ -6,9 +6,8 @@ import {useDrop} from 'react-dnd';
 import {useDispatch, useSelector} from 'react-redux';
 import BurgerItem from "../burger-item/burger-item";
 import {ingredientTypes} from "../../constants";
-import {moveSelectedIngredient} from "../../services/reducers";
+import {createOrder, moveSelectedIngredient} from "../../services/reducers";
 import {OrderDetails} from "../order-details/order-details";
-import {createOrder} from "../../services/api";
 
 const BurgerConstructor = ({onDropHandler}) => {
     const {selectedIngredients} = useSelector(store => store.burger);
