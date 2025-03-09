@@ -1,9 +1,24 @@
-.column{
-    position: relative;
-    width: 100%;
-    height: 650px;
+.burger-ingredients {
+    display: grid;
+    grid-template-rows: min-content min-content minmax(0, 1fr);
 }
-.content {
+.ingredients-title {
+    color: white;
+    font-size: 36px;
+}
+
+.ingredients-list-wrapper {
+    display: flex;
+    flex-flow: row wrap;
+    max-height: calc(100vh - 360px);
     overflow: auto;
-    height: 100%;
 }
+
+.burger-ingredients-tabs {
+    display: flex;
+}
+
+.burger-ingredients-tabs > div {
+    flex-grow: 1;
+}
+

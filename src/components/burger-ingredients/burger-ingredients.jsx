@@ -1,58 +1,86 @@
-import React, {useRef, useEffect} from 'react';
+import React, {useRef, useState} from 'react';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './style.module.css';
 import {ingredientType} from '../../prop-types';
 import PropTypes from "prop-types";
+import cs from 'classnames';
 import {useSelector} from "react-redux";
-import IngredientList from "./burger-ingredients/ingredient-list";
+import IngredientList from "../ingredient-list/ingredient-list";
+import {ingredientTypes} from "../../constants";
 
 export const BurgerIngredients = () => {
-    const [current, setCurrent] = React.useState('bun');
-	const apiData = useSelector(store => store.data);
-	const setTab = (tab) => {
-		setCurrent(tab);
-		const element = document.getElementById(tab);
-		if (element) element.scrollIntoView({ behavior: "smooth" });
-	};
-	const listBun = apiData.filter((itm)=>itm.type==='bun' && itm);
-	const listMain= apiData.filter((itm)=>itm.type==='main'&& itm);
-	const listSauce=apiData.filter((itm)=>itm.type==='sauce' && itm);
-	const primaryRef = useRef(null);
-	const bunRef = useRef(null);
-	const sauceRef = useRef(null);
-	const mainRef = useRef(null);
+    const [selectedIngredientType, setSelectedIngredientType] = useState('bun');
+    const {ingredients} = useSelector(store => store.burger);
+    const wrapperRef = useRef(null);
+    const bunRef = useRef(null);
+    const sauceRef = useRef(null);
+    const mainRef = useRef(null);
 
-	const handleScroll = () => {
-		const bunDistance = Math.abs(primaryRef.current.getBoundingClientRect().top - bunRef.current.getBoundingClientRect().top)
-		const sauceDistance = Math.abs(primaryRef.current.getBoundingClientRect().top - sauceRef.current.getBoundingClientRect().top)
-		const mainDistance = Math.abs(primaryRef.current.getBoundingClientRect().top - mainRef.current.getBoundingClientRect().top)
-		const minDistance = Math.min(bunDistance, sauceDistance, mainDistance);
-		const currentHeader = minDistance === bunDistance ? 'bun' : minDistance === sauceDistance ? 'sauce' : 'main';
-		setCurrent(prevState => (currentHeader === prevState.current ? prevState.current : currentHeader))
-	}
-	useEffect(() => {
-		document.querySelector(`#${current}`).scrollIntoView();
-	},[current])
+    function filterIngredients(type) {
+        return ingredients?.length && type && ingredients?.filter((i) => i.type === type && i)
+    }
+
+    function changeTab(tab) {
+        setSelectedIngredientType(tab);
+        const element = document.getElementById(tab);
+        if (element) element.scrollIntoView({behavior: "smooth"});
+    }
+
+    const handleScroll = () => {
+        if (wrapperRef?.current) {
+            const bunDistance = Math.abs(wrapperRef?.current?.getBoundingClientRect()?.top - bunRef?.current?.getBoundingClientRect()?.top)
+            const sauceDistance = Math.abs(wrapperRef.current.getBoundingClientRect().top - sauceRef.current.getBoundingClientRect().top)
+            const mainDistance = Math.abs(wrapperRef.current.getBoundingClientRect().top - mainRef.current.getBoundingClientRect().top)
+            const minDistance = Math.min(bunDistance, sauceDistance, mainDistance);
+            const currentTab = minDistance === bunDistance ? ingredientTypes.bun.key : minDistance === sauceDistance
+                ? ingredientTypes.sauce.key : ingredientTypes.main.key;
+
+            setSelectedIngredientType(prevState => (currentTab === prevState.current ? prevState.current : currentTab))
+        }
+    }
+
 
     return (
-        <div className={style.column}>
-            <p className="text text_type_main-large">
-                Соберите бургер
-            </p>
-            <div style={{ display: 'flex' }}>
-                <Tab value="bun" active={current === 'bun'} onClick={setTab}>Булки</Tab>
-	            <Tab value="main" active={current === 'main'} onClick={setTab}>Начинки</Tab>
-                <Tab value="sauce" active={current === 'sauce'} onClick={setTab}>Соусы</Tab>
+        <div className={style['ingredient-list']}>
+            <h2 className={cs(style['ingredients-title'], 'pt-10 pb-5')}>
+                Соберите бургер</h2>
+            <div className={`${style['burger-ingredients-tabs']} custom-scroll`}>
+                {Object.keys(ingredientTypes)?.map((type) => (
+                    <Tab
+                        key={type}
+                        active={selectedIngredientType === type}
+                        value={type}
+                        onClick={(type) => {
+                            changeTab(type);
+                        }}
+                    >
+                        {ingredientTypes[type].name}
+                    </Tab>
+                ))}
             </div>
-            <div className={style.content} ref={primaryRef} onScroll={handleScroll} >
-	            <IngredientList apiData={listBun} id={'bun'} subRef={bunRef}>Булки</IngredientList>
-	            <IngredientList apiData={listMain} id={'main'} subRef={mainRef}>Начинки</IngredientList>
-	            <IngredientList apiData={listSauce} id={'sauce'} subRef={sauceRef} >Соусы</IngredientList>
-            </div>
+            <ul
+                ref={wrapperRef}
+                onScroll={handleScroll}
+                className={style['ingredients-list-wrapper']}
+            >
 
+                <IngredientList title={ingredientTypes.bun.name}
+                                data={filterIngredients(ingredientTypes.bun.key)}
+                                subRef={bunRef}
+                                id={ingredientTypes.bun.key}/>
+                <IngredientList title={ingredientTypes.sauce.name}
+                                data={filterIngredients(ingredientTypes.sauce.key)}
+                                subRef={sauceRef}
+                                id={ingredientTypes.sauce.key}/>
+                <IngredientList title={ingredientTypes.main.name}
+                                data={filterIngredients(ingredientTypes.main.key)}
+                                subRef={mainRef}
+                                id={ingredientTypes.main.key}/>
+
+            </ul>
         </div>
     );
 }
 BurgerIngredients.propTypes = {
-	apiData: PropTypes.arrayOf(ingredientType)
+    apiData: PropTypes.arrayOf(ingredientType)
 };

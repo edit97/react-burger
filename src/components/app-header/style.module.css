@@ -18,9 +18,6 @@
 }
 
 .project_logo {
-    /*align-items: center;*/
-    /*display: flex;*/
-    /*justify-content: center;*/
     position: absolute;
     left: 50%;
     transform: translateX(-50%);

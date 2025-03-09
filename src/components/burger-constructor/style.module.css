@@ -1,17 +1,3 @@
-.column{
-    position: relative;
-    width: 600px;
-    height: 500px;
-    padding-top: 80px;
-}
-.column_active{
-    position: relative;
-    width: 100%;
-    height: 500px;
-    border: 5px solid #3a3a47;
-    background-color: #1C1C21;
-    padding-top: 35px;
-}
 .content {
     overflow: auto;
     height: 350px;
@@ -33,19 +19,12 @@
     align-items: center;
     justify-content: flex-end;
 }
-.constructor_active {
-    background-color: #1C1C21;
-    border: 4px double purple;
-}
 
-.constructor_candrop {
-    border: 4px double purple;
-}
 .list{
     padding-left: 0;
     margin: 0;
     list-style-type: none;
-    overflow-y: scroll;
+    overflow-y: auto;
     height: 400px;
 }
 

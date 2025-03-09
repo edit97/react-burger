@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import styles from './style.module.css';
-import closeImg from '../../images/close.svg';
 import PropTypes from "prop-types";
 import ModalOverlay from "./modal-overlay/modal-overlay";
+import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
 
 export const Modal = (props) => {
@@ -22,7 +22,7 @@ export const Modal = (props) => {
 	        <div className={styles.modal_content} onClick={e=>e.stopPropagation()}>
 		        <div className={styles.modal_content_caption}>
 					<span className="text text_type_main-medium">{props.header}</span>
-			        <img src={closeImg} alt={"Закрыть"} className={styles.close_button} onClick={()=>props.setModalActive(false)}/>
+					<CloseIcon type="primary" className={styles.close_button} onClick={()=>props.setModalActive(false)}/>
 		        </div>
 		        {props.children}
 	        </div>

@@ -1,10 +1,15 @@
 import React from 'react';
-import css from './style.module.css'
+import style from './style.module.css'
 import {ConstructorElement, DragIcon} from  '@ya.praktikum/react-developer-burger-ui-components';
 import { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
+import {useDispatch} from "react-redux";
+import {deleteSelectedIngredient} from "../../services/reducers";
 
-export const BurgerItem = ({item, index, isLocked, deleteFunc, moveFunc}) => {
+export const BurgerItem = ({item, index, isLocked, handleMove}) => {
+    const dispatch = useDispatch();
+
+
     const id    = item._id
     const ref = useRef(null)
     const [, drop] = useDrop({
@@ -28,13 +33,12 @@ export const BurgerItem = ({item, index, isLocked, deleteFunc, moveFunc}) => {
             if (dragIndex < hoverIndex && hoverClientY < hoverMidY) return;
             if (dragIndex > hoverIndex && hoverClientY > hoverMidY) return;
 
-            moveFunc(dragIndex, hoverIndex);
+            handleMove(dragIndex, hoverIndex);
             el.index = hoverIndex;
         },
     });
 
     const [{ isDrag }, drag] = useDrag({
-
         type: 'item',
         item: () => {
             return { id, index };
@@ -43,18 +47,22 @@ export const BurgerItem = ({item, index, isLocked, deleteFunc, moveFunc}) => {
             isDrag: monitor.isDragging(),
         }),
     });
-    const opacity = isDrag ? 0 : 1;
+
     drag(drop(ref))
 
+    function handleDelete() {
+        dispatch(deleteSelectedIngredient({id: item.id}));
+    }
+
     return (
-        <li ref={ ref } className={ css.burger_item } style={{ opacity }}>
+        <li ref={ ref } className={ style.burger_item } style={{ opacity: isDrag ? 0 : 1 }}>
             <DragIcon type='primary' />
             <ConstructorElement
                 text={item.name}
                 price={item.price}
                 isLocked={isLocked}
                 thumbnail={item.image}
-                handleClose={deleteFunc}
+                handleClose={handleDelete}
             />
         </li>
     );

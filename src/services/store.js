@@ -1,10 +1,14 @@
-import {applyMiddleware, compose, createStore} from "redux";
-import { thunk } from 'redux-thunk';
-import {rootReducer} from "./reducers/rootReducer";
+import { configureStore } from '@reduxjs/toolkit';
 
-const composeEnhancers =
-	typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-		? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
-		: compose;
-const enhancer = composeEnhancers(applyMiddleware(thunk));
-export const store = createStore(rootReducer, enhancer);
+import {burgerReducer} from './reducers';
+import {orderReducer} from "./reducers";
+
+const store = configureStore({
+	reducer: {
+		burger: burgerReducer,
+		order: orderReducer,
+	},
+});
+
+export default store;
+
