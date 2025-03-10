@@ -10,7 +10,8 @@ import {createOrder, moveSelectedIngredient} from "../../services/reducers";
 import {OrderDetails} from "../order-details/order-details";
 
 const BurgerConstructor = ({onDropHandler}) => {
-    const {selectedIngredients} = useSelector(store => store.burger);
+    const selectedIngredients = useSelector(store => store.burger.selectedIngredients);
+
     const dispatch = useDispatch();
 
     const [modalIsActive, setModalActive] = useState(false);

@@ -11,7 +11,7 @@ import {ingredientTypes} from "../../constants";
 export const IngredientItem = ({data}) => {
     const {name, image, price} = data;
 
-    const {selectedIngredients} = useSelector(store => store.burger);
+    const selectedIngredients = useSelector(store => store.burger.selectedIngredients);
 
     const [modalIsActive, setModalActive] = useState(false);
 
@@ -23,7 +23,7 @@ export const IngredientItem = ({data}) => {
         })
     })
     const opacity = isDrag ? 0.5 : 1;
-    
+
     const count = selectedIngredients.filter(i => i._id === data._id).length
         * (data.type === ingredientTypes.bun.key ? 2 : 1)
 
@@ -50,8 +50,10 @@ export const IngredientItem = ({data}) => {
 }
 
 IngredientItem.propTypes = {
-    name: PropTypes.string,
-    image: PropTypes.string,
-    price: PropTypes.number
+    data: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        image: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired
+    }).isRequired
 };
 export default IngredientItem;

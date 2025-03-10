@@ -18,5 +18,5 @@ export const IngredientDetails = ({data}) => {
 }
 
 IngredientDetails.propTypes = {
-	productData : PropTypes.any
+	data : PropTypes.any
 }
