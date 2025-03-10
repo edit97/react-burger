@@ -1,0 +1,38 @@
+.content {
+    overflow: auto;
+    height: 350px;
+    margin-top:10px;
+    margin-bottom:10px;
+}
+
+.column_list {
+    composes: content;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.total {
+    padding-top: 40px;
+    display:flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.list{
+    padding-left: 0;
+    margin: 0;
+    list-style-type: none;
+    overflow-y: auto;
+    height: 400px;
+}
+
+.drop_msg {
+    height: 40px;
+    text-align: center;
+}
+.no_drop_msg {
+    display:none;
+
+}
