@@ -20,7 +20,7 @@ const slice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(createOrder.fulfilled, (state, action) => {
-                state.order = action.payload;
+                state.order = action.payload.order;
             })
     },
 });

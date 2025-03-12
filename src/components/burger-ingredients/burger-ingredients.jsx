@@ -15,7 +15,7 @@ export const BurgerIngredients = () => {
     const mainRef = useRef(null);
 
     function filterIngredients(type) {
-        return ingredients?.length && type && ingredients?.filter((i) => i.type === type && i)
+        return (ingredients?.length && type) ? ingredients?.filter((i) => i.type === type && i) : []
     }
 
     function changeTab(tab) {
