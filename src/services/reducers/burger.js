@@ -17,15 +17,19 @@ const slice = createSlice({
     name: 'burger',
     initialState,
     reducers: {
-        setSelectedIngredients(state, {payload}) {
-            const uniqueId = uuidv4();
-            let list =  state.selectedIngredients
+        setSelectedIngredients: {
+            reducer(state, {payload}){
+                let list =  state.selectedIngredients
 
-            if (payload.type === 'bun') {
-                list = list.filter(item => item.type !== 'bun');
+                if (payload.type === 'bun') {
+                    list = list.filter(item => item.type !== 'bun');
+                }
+
+                state.selectedIngredients = [...list, payload]
+            },
+            prepare: (ingredient) => {
+                return { payload: { ...ingredient, id: uuidv4() } };
             }
-
-            state.selectedIngredients = [...list, {...payload, id: uniqueId}]
         },
         deleteSelectedIngredient(state, {payload}) {
             state.selectedIngredients = state.selectedIngredients.filter((i) => i.id !== payload.id);
@@ -36,6 +40,10 @@ const slice = createSlice({
 
             state.selectedIngredients = ingredients;
         },
+        clearSelectedIngredient(state) {
+            console.log('clearSelectedIngredient');
+            state.selectedIngredients = [];
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -44,7 +52,7 @@ const slice = createSlice({
                 state.ingredientsError = null;
             })
             .addCase(fetchIngredients.fulfilled, (state, action) => {
-                state.ingredients = action.payload;
+                state.ingredients = action.payload.data;
                 state.ingredientsRequest = false;
             })
             .addCase(fetchIngredients.rejected, (state, action) => {
@@ -60,5 +68,6 @@ export const burgerReducer = slice.reducer;
 export const {
     setSelectedIngredients,
     deleteSelectedIngredient,
-    moveSelectedIngredient
+    moveSelectedIngredient,
+    clearSelectedIngredient
 } = slice.actions;

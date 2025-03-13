@@ -6,11 +6,12 @@ import {useDrop} from 'react-dnd';
 import {useDispatch, useSelector} from 'react-redux';
 import BurgerItem from "../burger-item/burger-item";
 import {ingredientTypes} from "../../constants";
-import {createOrder, moveSelectedIngredient} from "../../services/reducers";
+import {clearSelectedIngredient, createOrder, moveSelectedIngredient} from "../../services/reducers";
 import {OrderDetails} from "../order-details/order-details";
 
 const BurgerConstructor = ({onDropHandler}) => {
-    const {selectedIngredients} = useSelector(store => store.burger);
+    const selectedIngredients = useSelector(store => store.burger.selectedIngredients);
+
     const dispatch = useDispatch();
 
     const [modalIsActive, setModalActive] = useState(false);
@@ -32,10 +33,17 @@ const BurgerConstructor = ({onDropHandler}) => {
         return selectedIngredients.reduce((total, item) =>
             total + (item.price ? (item.type === 'bun' ? item.price * 2 : item.price) : 0), 0);
     }
-    const handleClick = () => {
-        setModalActive(true)
-        dispatch(createOrder(selectedIngredients))
+    const handleClick = async () => {
+        try {
+            setModalActive(true)
+            await dispatch(createOrder(selectedIngredients))
+
+            dispatch(clearSelectedIngredient())
+        } catch (error) {
+            console.error(error);
+        }
     }
+
     const handleMove = (from, to) => {
         dispatch(moveSelectedIngredient({from, to}));
     }

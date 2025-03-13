@@ -5,7 +5,7 @@ import {useSelector} from "react-redux";
 
 export const OrderDetails = () => {
 	const order = useSelector(state => state.order);
-	console.log('order', order);
+
 	return(
 		<div className={style.order_details}>
 			<p className="text text_type_digits-large">{order?.order?.number}</p>

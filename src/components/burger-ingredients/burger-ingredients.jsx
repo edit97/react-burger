@@ -1,8 +1,6 @@
 import React, {useRef, useState} from 'react';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './style.module.css';
-import {ingredientType} from '../../prop-types';
-import PropTypes from "prop-types";
 import cs from 'classnames';
 import {useSelector} from "react-redux";
 import IngredientList from "../ingredient-list/ingredient-list";
@@ -10,14 +8,14 @@ import {ingredientTypes} from "../../constants";
 
 export const BurgerIngredients = () => {
     const [selectedIngredientType, setSelectedIngredientType] = useState('bun');
-    const {ingredients} = useSelector(store => store.burger);
+    const ingredients = useSelector(store => store.burger.ingredients);
     const wrapperRef = useRef(null);
     const bunRef = useRef(null);
     const sauceRef = useRef(null);
     const mainRef = useRef(null);
 
     function filterIngredients(type) {
-        return ingredients?.length && type && ingredients?.filter((i) => i.type === type && i)
+        return (ingredients?.length && type) ? ingredients?.filter((i) => i.type === type && i) : []
     }
 
     function changeTab(tab) {
@@ -81,6 +79,3 @@ export const BurgerIngredients = () => {
         </div>
     );
 }
-BurgerIngredients.propTypes = {
-    apiData: PropTypes.arrayOf(ingredientType)
-};

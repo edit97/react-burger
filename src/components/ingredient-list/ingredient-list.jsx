@@ -20,7 +20,7 @@ export const IngredientList = ({data, subRef, id, title}) => {
 }
 
 IngredientList.propTypes = {
-    id: PropTypes.string,
-    apiData: PropTypes.arrayOf(ingredientType)
+    id: PropTypes.string.isRequired,
+    data: PropTypes.arrayOf(ingredientType).isRequired
 };
 export default IngredientList;
