@@ -1,0 +1,51 @@
+.profile_main {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    max-width: 1320px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    gap: 60px;
+}
+
+.link {
+    text-decoration: none;
+    display: flex;
+    text-align: center;
+    align-items: center;
+}
+
+.profile_col {
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav {
+    max-width: 320px;
+}
+
+.nav_list {
+    list-style-type: none;
+}
+
+
+.link_active {
+    color: #F2F2F3;
+    text-decoration: none;
+}
+
+.profile_form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.input_item{
+    width: 100%;
+    background: transparent;
+    border: none;
+}
+.input_item:focus{
+    outline: none;
+}

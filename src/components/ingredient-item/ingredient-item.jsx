@@ -27,10 +27,14 @@ export const IngredientItem = ({data}) => {
     const count = selectedIngredients.filter(i => i._id === data._id).length
         * (data.type === ingredientTypes.bun.key ? 2 : 1)
 
+    const toggleIngredient = () => {
+        setModalActive(true)
+    }
+
     return (
         <>
             <div className={style['ingredient-item']}
-                 onClick={() => setModalActive(true)}
+                 onClick={toggleIngredient}
                  ref={dragRef} style={{opacity}}>
                 <img src={image} alt={name}/>
                 <span>

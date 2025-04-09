@@ -1,0 +1,26 @@
+.reg_box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    width: 500px;
+    margin: 100px auto 0;
+}
+
+.reg_fields {
+    margin-top: 50px;
+    height: 340px;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.reg_text {
+    margin-top: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
