@@ -11,6 +11,7 @@ import {OrderDetails} from "../order-details/order-details";
 
 const BurgerConstructor = ({onDropHandler}) => {
     const selectedIngredients = useSelector(store => store.burger.selectedIngredients);
+    const accessToken = useSelector(store => store.auth.accessToken);
 
     const dispatch = useDispatch();
 
@@ -94,7 +95,7 @@ const BurgerConstructor = ({onDropHandler}) => {
             <div className={style.total}>
                 <p className="text text_type_digits-medium">{getTotalPrice()}</p>
                 <CurrencyIcon type="primary"/>
-                {bun && <Button htmlType="button" size="medium" onClick={handleClick}>Оформить заказ</Button>}
+                {bun && accessToken && <Button htmlType="button" size="medium" onClick={handleClick}>Оформить заказ</Button>}
                 {modalIsActive && <Modal setModalActive={setModalActive}>
                     <OrderDetails/>
                 </Modal>}
