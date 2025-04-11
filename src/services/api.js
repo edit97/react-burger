@@ -78,6 +78,7 @@ export const getUser = async (token) => {
         }
     })
 };
+
 export const updateUser = async ({email, name, token}) => {
     return request('/auth/user', {
         method: 'PATCH',
@@ -87,5 +88,20 @@ export const updateUser = async ({email, name, token}) => {
         },
         body: JSON.stringify({email, name})
     })
+};
+
+export const checkAuth = async () => {
+    return request('/auth/token', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            token : localStorage.getItem('refreshToken')
+        }),
+    })
+        .then((res)=>{
+            console.log(res, 'RESPONSE');
+        })
 };
 

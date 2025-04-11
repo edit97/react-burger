@@ -8,12 +8,14 @@ import BurgerItem from "../burger-item/burger-item";
 import {ingredientTypes} from "../../constants";
 import {clearSelectedIngredient, createOrder, moveSelectedIngredient} from "../../services/reducers";
 import {OrderDetails} from "../order-details/order-details";
+import {useNavigate} from "react-router-dom";
 
 const BurgerConstructor = ({onDropHandler}) => {
     const selectedIngredients = useSelector(store => store.burger.selectedIngredients);
     const accessToken = useSelector(store => store.auth.accessToken);
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [modalIsActive, setModalActive] = useState(false);
     const [{canDrop}, dropTarget] = useDrop({
@@ -34,14 +36,19 @@ const BurgerConstructor = ({onDropHandler}) => {
         return selectedIngredients.reduce((total, item) =>
             total + (item.price ? (item.type === 'bun' ? item.price * 2 : item.price) : 0), 0);
     }
-    const handleClick = async () => {
-        try {
-            setModalActive(true)
-            await dispatch(createOrder(selectedIngredients))
 
-            dispatch(clearSelectedIngredient())
-        } catch (error) {
-            console.error(error);
+    const handleClick = async () => {
+        if (accessToken) {
+            try {
+                setModalActive(true)
+                await dispatch(createOrder(selectedIngredients))
+
+                dispatch(clearSelectedIngredient())
+            } catch (error) {
+                console.error(error);
+            }
+        }else {
+            navigate('/login', {from: '/'})
         }
     }
 
@@ -95,8 +102,10 @@ const BurgerConstructor = ({onDropHandler}) => {
             <div className={style.total}>
                 <p className="text text_type_digits-medium">{getTotalPrice()}</p>
                 <CurrencyIcon type="primary"/>
-                {bun && accessToken && <Button htmlType="button" size="medium" onClick={handleClick}>Оформить заказ</Button>}
-                {modalIsActive && <Modal setModalActive={setModalActive}>
+                {bun && <Button htmlType="button" size="medium" onClick={handleClick}>Оформить заказ</Button>}
+                {modalIsActive && <Modal  onClose={() => {
+                    navigate(-1)
+                }}>
                     <OrderDetails/>
                 </Modal>}
             </div>

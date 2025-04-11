@@ -1,19 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import style from "../modal/style.module.css";
-import PropTypes from 'prop-types';
 import {useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
 
-export const IngredientDetails = ({data}) => {
+export const IngredientDetails = () => {
     const params = useParams();
     const ingredients = useSelector(store => store.burger.ingredients);
 
     const [ingredient, setIngredient] = useState(false);
 
     useEffect(() => {
+        console.log('ingredient', ingredient);
+        console.log('params', params);
         setIngredient(
-            params?.id ? ingredients.find(i => i._id === params.id) : data);
-    }, [data, ingredients]);
+            params?.id && ingredients.find(i => i._id === params.id));
+    }, [ ingredients]);
 
     return (
         ingredient && <div className={style.modal_details}>
@@ -29,6 +30,3 @@ export const IngredientDetails = ({data}) => {
     );
 }
 
-IngredientDetails.propTypes = {
-    data: PropTypes.any
-}

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useLayoutEffect} from "react";
+import React, {useState, useEffect} from "react";
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import style from "./style.module.css";
 import {useDispatch, useSelector} from "react-redux"
@@ -16,9 +16,9 @@ export const ProfilePage = () => {
     const user = useSelector(store => store.auth.user);
     const accessToken = useSelector(store => store.auth.accessToken);
 
-    useLayoutEffect(() => {
-        dispatch(getUser(accessToken))
-    },[])
+    useEffect(() => {
+        dispatch(getUser(localStorage.getItem('accessToken')))
+    }, [])
 
     useEffect(() => {
         setState({
