@@ -1,21 +1,24 @@
-import React, {useEffect, useRef} from 'react';
+import React, {ReactNode, useEffect, useRef} from 'react';
 import ReactDOM from 'react-dom';
 import styles from './style.module.css';
-import PropTypes from "prop-types";
 import ModalOverlay from "./modal-overlay/modal-overlay";
 import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
+type ModalProps = {
+    onClose: () => void;
+    title?: string;
+    children: ReactNode;
+};
 
-export const Modal = ({
+export const Modal: React.FC<ModalProps> = ({
                           onClose,
                           title,
                           children
                       }) => {
-    const modalRef = useRef(null);
+    const modalRef = useRef<HTMLDivElement>(null);
 
-    console.log(' ref={modalElementRef}');
     useEffect(() => {
-        const escFunc = (e) => (e.key === "Escape") && onClose();
+        const escFunc = (e: KeyboardEvent) => (e.key === "Escape") && onClose();
         document.addEventListener('keydown', escFunc);
 
         return () => {
@@ -46,15 +49,6 @@ export const Modal = ({
             </div>
         </>;
 
-    return ReactDOM.createPortal(
-        portalContent,
-        document.getElementById('portal')
-    );
-
+    const portalElement = document.getElementById('portal');
+    return portalElement ? ReactDOM.createPortal(portalContent, portalElement) : null;
 }
-
-Modal.propTypes = {
-    // setModalActive: PropTypes.func.isRequired
-    onClose: PropTypes.func.isRequired,
-    title: PropTypes.string
-};

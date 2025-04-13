@@ -6,9 +6,11 @@ import {BrowserRouter} from "react-router-dom";
 import {Provider} from "react-redux";
 import store from "./services/store";
 
+const container = document.getElementById('root');
 const root = ReactDOM.createRoot(
-    document.getElementById('root')
+    container as HTMLElement
 );
+
 root.render(
     <React.StrictMode>
         <BrowserRouter>

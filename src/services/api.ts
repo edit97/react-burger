@@ -1,11 +1,12 @@
 import {request} from "../utils/request";
+import {IRegisterUser, TIngredient} from "../utils/types";
 
 export const fetchIngredients = () => {
-    return request('/ingredients')
+    return request<any>('/ingredients')
 };
 
-export const createOrder = async (ingredients) => {
-    return request('/orders', {
+export const createOrder = async (ingredients: TIngredient[]) => {
+    return request<any>('/orders', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
@@ -18,48 +19,48 @@ export const registerUser = async ({
                                        email,
                                        name,
                                        password,
-                                   }) => {
-    return request('/auth/register', {
+                                   }: IRegisterUser) => {
+    return request<any>('/auth/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email, name, password })
+        body: JSON.stringify({email, name, password})
     })
 };
 
-export const forgotPassword = async ({email}) => {
-    return request('/password-reset', {
+export const forgotPassword = async ({email}: { email: string }) => {
+    return request<any>('/password-reset', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email })
+        body: JSON.stringify({email})
     })
 };
 
-export const resetPassword = async ({password, token}) => {
-    return request('/password-reset/reset', {
+export const resetPassword = async ({password, token}: { password: string; token: string }) => {
+    return request<any>('/password-reset/reset', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ password, token })
+        body: JSON.stringify({password, token})
     })
 };
 
-export const loginAction = async ({password, email}) => {
-    return request('/auth/login', {
+export const loginAction = async ({password, email}: { password: string; email: string }) => {
+    return request<any>('/auth/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ password, email })
+        body: JSON.stringify({password, email})
     })
 };
 
 export const logoutAction = async () => {
-    return request('/auth/logout', {
+    return request<any>('/auth/logout', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -69,18 +70,18 @@ export const logoutAction = async () => {
         })
     })
 };
-export const getUser = async (token) => {
-    return request('/auth/user', {
+export const getUser = async (token: string | null) => {
+    return request<any>('/auth/user', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
-            'Authorization': token
+            'Authorization': token || ''
         }
     })
 };
 
-export const updateUser = async ({email, name, token}) => {
-    return request('/auth/user', {
+export const updateUser = async ({email, name, token}: { email: string; name: string; token: string }) => {
+    return request<any>('/auth/user', {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
@@ -91,16 +92,16 @@ export const updateUser = async ({email, name, token}) => {
 };
 
 export const checkAuth = async () => {
-    return request('/auth/token', {
+    return request<any>('/auth/token', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            token : localStorage.getItem('refreshToken')
+            token: localStorage.getItem('refreshToken')
         }),
     })
-        .then((res)=>{
+        .then((res) => {
             console.log(res, 'RESPONSE');
         })
 };

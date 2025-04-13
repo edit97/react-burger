@@ -1,20 +1,21 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, ChangeEvent, FormEvent} from "react";
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import style from "./style.module.css";
 import {useDispatch, useSelector} from "react-redux"
 import {Links} from "./links";
 import {getUser, updateUser} from "../../services/reducers/auth";
+import {AppDispatch, TReduxStore, TUser} from "../../utils/types";
 
-export const ProfilePage = () => {
-    const dispatch = useDispatch();
-    const initState = {
+export const ProfilePage: React.FC = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const initState: TUser & { password: string } = {
         name: "",
         email: "",
         password: ""
     }
     const [state, setState] = useState(initState);
-    const user = useSelector(store => store.auth.user);
-    const accessToken = useSelector(store => store.auth.accessToken);
+    const user = useSelector((store: TReduxStore) => store.auth.user);
+    const accessToken = useSelector((store: TReduxStore) => store.auth.accessToken);
 
     useEffect(() => {
         dispatch(getUser(localStorage.getItem('accessToken')))
@@ -27,14 +28,14 @@ export const ProfilePage = () => {
         });
     }, [user]);
 
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const target = e.target;
         setState({
             ...state,
             [target.name]: target.value
         });
     }
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         dispatch(updateUser({
             ...state,
@@ -42,7 +43,7 @@ export const ProfilePage = () => {
         }))
     }
 
-    const handleReset = (e) => {
+    const handleReset = (e: FormEvent) => {
         e.preventDefault();
         setState({
             ...initState,
@@ -57,6 +58,7 @@ export const ProfilePage = () => {
             </div>
             <div className={style.profile_col}>
                 <form className={style.profile_form} onSubmit={handleSubmit}>
+                    {/*@ts-ignore*/}
                     <Input
                         type={"text"}
                         placeholder={"Имя"}
@@ -66,6 +68,7 @@ export const ProfilePage = () => {
                         value={state.name ?? ''}
                         size={"default"}
                     />
+                    {/*@ts-ignore*/}
                     <Input
                         type={"email"}
                         placeholder={"Email"}
@@ -75,6 +78,7 @@ export const ProfilePage = () => {
                         value={state.email ?? ''}
                         size={"default"}
                     />
+                    {/*@ts-ignore*/}
                     <Input
                         type={"password"}
                         placeholder={"Пароль"}

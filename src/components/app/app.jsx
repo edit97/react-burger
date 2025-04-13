@@ -14,7 +14,7 @@ import {ForgotPasswordPage} from "../../pages/forgot-password/forgot-password";
 import {ResetPasswordPage} from "../../pages/reset-password/reset-password";
 import {ProfilePage} from "../../pages/profile/profile";
 import {ProtectedRouteElement} from "../protected-route/protected-route";
-import {IngredientDetails} from "../ingredient-details/ingredient-details";
+import {IngredientDetails} from "../ingredient-details/ingredient-details.tsx";
 import {Modal} from "../modal/modal";
 
 export const App = () => {

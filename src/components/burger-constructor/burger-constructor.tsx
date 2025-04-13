@@ -9,26 +9,35 @@ import {ingredientTypes} from "../../constants";
 import {clearSelectedIngredient, createOrder, moveSelectedIngredient} from "../../services/reducers";
 import {OrderDetails} from "../order-details/order-details";
 import {useNavigate} from "react-router-dom";
+import {AppDispatch, TIngredient, TReduxStore} from "../../utils/types";
 
-const BurgerConstructor = ({onDropHandler}) => {
-    const selectedIngredients = useSelector(store => store.burger.selectedIngredients);
-    const accessToken = useSelector(store => store.auth.accessToken);
+type BurgerConstructorProps = {
+    onDropHandler: (item: TIngredient) => void;
+}
 
-    const dispatch = useDispatch();
+type DragItem = {
+    id: string;
+    type: string;
+}
+
+const BurgerConstructor: React.FC<BurgerConstructorProps> = ({onDropHandler}) => {
+    const selectedIngredients = useSelector((store: TReduxStore) => store.burger.selectedIngredients);
+    const accessToken = useSelector((store: TReduxStore) => store.auth.accessToken);
+
+    const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
 
     const [modalIsActive, setModalActive] = useState(false);
-    const [{canDrop}, dropTarget] = useDrop({
+    const [{canDrop}, dropTarget] =  useDrop<DragItem, void, { canDrop: boolean }>({
         accept: "ingredient",
-        drop(itemId) {
-            onDropHandler(itemId);
+        drop(item) {
+            onDropHandler(item as unknown as TIngredient);
         },
         collect: monitor => ({
             isHover: monitor.isOver(),
             canDrop: monitor.canDrop(),
         })
     });
-
 
     const bun = selectedIngredients?.find(i => i.type === ingredientTypes.bun.key)
 
@@ -41,18 +50,19 @@ const BurgerConstructor = ({onDropHandler}) => {
         if (accessToken) {
             try {
                 setModalActive(true)
-                await dispatch(createOrder(selectedIngredients))
+                await dispatch(createOrder(selectedIngredients) as any);
 
+                // @ts-ignore
                 dispatch(clearSelectedIngredient())
             } catch (error) {
                 console.error(error);
             }
         }else {
-            navigate('/login', {from: '/'})
+            navigate('/login', { state: { from: '/' } });
         }
     }
 
-    const handleMove = (from, to) => {
+    const handleMove = (from:number, to:number) => {
         dispatch(moveSelectedIngredient({from, to}));
     }
 
@@ -75,10 +85,10 @@ const BurgerConstructor = ({onDropHandler}) => {
             }
             <div className={style.list}>
                 <ul>
-                    {selectedIngredients?.filter(i => i.type !== ingredientTypes.bun.key)?.map((item, i) => {
+                    {selectedIngredients?.filter((i:TIngredient) => i.type !== ingredientTypes.bun.key)?.map((item, i) => {
                         return (
                             <BurgerItem
-                                key={item.id}
+                                key={item._id}
                                 item={item}
                                 isLocked={false}
                                 handleMove={handleMove}

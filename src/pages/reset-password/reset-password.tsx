@@ -1,18 +1,19 @@
-import React, { useLayoutEffect} from 'react';
+import React, {useLayoutEffect} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './reset-password.module.css';
 import {useDispatch, useSelector} from 'react-redux';
 import {resetPassword} from "../../services/reducers/auth";
+import {AppDispatch, TReduxStore} from "../../utils/types";
 
-export const ResetPasswordPage = () => {
+export const ResetPasswordPage: React.FC = () => {
     const [password, setPassword] = React.useState('');
     const [token, setToken] = React.useState('');
 
     let navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
 
-    const authorized = useSelector(store => store.auth.authorized);
+    const authorized = useSelector((store: TReduxStore) => store.auth.isLoggedIn);
 
     useLayoutEffect(() => {
         if (authorized) {
@@ -20,7 +21,7 @@ export const ResetPasswordPage = () => {
         }
     }, [])
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch(resetPassword({password, token}))
             .then(()=>{
@@ -31,8 +32,10 @@ export const ResetPasswordPage = () => {
     return <div className={style.login_box}>
         <form className={style.login_fields} onSubmit={handleSubmit}>
             <h3 className="text text_type_main-medium">Восстановление пароля</h3>
+            {/*@ts-ignore*/}
             <Input type={"password"} placeholder={"Введите новый пароль"} value={password}
                    onChange={(event) => setPassword(event.target.value)}/>
+            {/*@ts-ignore*/}
             <Input type={"text"} placeholder={"Введите код из письма"} value={token}
                    onChange={(event) => setToken(event.target.value)}/>
 

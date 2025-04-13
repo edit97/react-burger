@@ -1,18 +1,31 @@
-import React from 'react';
+import React, {FC} from 'react';
 import style from './style.module.css'
 import {ConstructorElement, DragIcon} from  '@ya.praktikum/react-developer-burger-ui-components';
 import { useRef } from 'react';
-import { useDrag, useDrop } from 'react-dnd';
+import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd';
 import {useDispatch} from "react-redux";
 import {deleteSelectedIngredient} from "../../services/reducers";
+import {TIngredientWithUUID} from "../../utils/types";
 
-export const BurgerItem = ({item, index, isLocked, handleMove}) => {
+type BurgerItemProps = {
+    item: TIngredientWithUUID;
+    index: number;
+    isLocked: boolean;
+    handleMove: (from: number, to: number) => void;
+};
+
+type DragItem = {
+    id: string;
+    index: number;
+};
+
+export const BurgerItem: FC<BurgerItemProps> = ({item, index, isLocked, handleMove}) => {
     const dispatch = useDispatch();
 
 
     const id    = item._id
-    const ref = useRef(null)
-    const [, drop] = useDrop({
+    const ref = useRef<HTMLLIElement>(null);
+    const [, drop] = useDrop<DragItem, void, unknown>({
         accept: 'item',
 
         collect(monitor) {
@@ -20,14 +33,20 @@ export const BurgerItem = ({item, index, isLocked, handleMove}) => {
                 handlerId: monitor.getHandlerId(),
             };
         },
-        hover(el, monitor) {
+        hover(el: DragItem, monitor: DropTargetMonitor) {
             if (!ref.current) return;
+
             const dragIndex = el.index;
             const hoverIndex = index;
+
             if (dragIndex === hoverIndex) return;
-            const hoverRect = ref.current?.getBoundingClientRect();
-            const hoverMidY = (hoverRect.bottom - hoverRect.top)/2;
+
+            const hoverRect = ref.current.getBoundingClientRect();
+            const hoverMidY = (hoverRect.bottom - hoverRect.top) / 2;
+
             const clientOffset = monitor.getClientOffset();
+            if (!clientOffset) return;
+
             const hoverClientY = clientOffset.y - hoverRect.top;
 
             if (dragIndex < hoverIndex && hoverClientY < hoverMidY) return;
@@ -38,7 +57,7 @@ export const BurgerItem = ({item, index, isLocked, handleMove}) => {
         },
     });
 
-    const [{ isDrag }, drag] = useDrag({
+    const [{ isDrag }, drag] = useDrag<DragItem, void, { isDrag: boolean }>({
         type: 'item',
         item: () => {
             return { id, index };

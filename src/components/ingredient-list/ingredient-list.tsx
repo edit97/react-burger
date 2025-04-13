@@ -1,17 +1,23 @@
-import React from 'react';
+import {FC, RefObject} from "react";
 import style from './style.module.css';
-import {ingredientType} from '../../prop-types';
-import PropTypes from "prop-types";
 import IngredientItem from "../ingredient-item/ingredient-item";
+import {TIngredient} from "../../utils/types";
 
-export const IngredientList = ({data, subRef, id, title}) => {
+type IngredientListProps = {
+    id: string;
+    title: string;
+    data: TIngredient[];
+    subRef: RefObject<HTMLParagraphElement>;
+};
+
+export const IngredientList: FC<IngredientListProps> = ({data, subRef, id, title}:IngredientListProps) => {
     return (
         <>
             <p className="" id={id} ref={subRef}>
                 {title}
             </p>
             <div className={style.ingredient_list}>
-                {data?.length && data?.map((item) => {
+                {data?.length && data?.map((item: TIngredient) => {
                     return <IngredientItem key={item._id} data={item}/>
                 })}
             </div>
@@ -19,8 +25,4 @@ export const IngredientList = ({data, subRef, id, title}) => {
     );
 }
 
-IngredientList.propTypes = {
-    id: PropTypes.string.isRequired,
-    data: PropTypes.arrayOf(ingredientType).isRequired
-};
 export default IngredientList;

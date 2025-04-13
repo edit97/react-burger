@@ -13,7 +13,10 @@ import {
 
 const initialState = {
     login: false,
-    user: null,
+    user: {
+        name: '',
+        email: ''
+    },
     isLoggedIn: false,
     refreshToken: '',
     accessToken: '',
@@ -60,7 +63,10 @@ const slice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(loginAction.fulfilled, (state, action) => {
-                state.user = action?.payload?.user;
+                state.user = action?.payload?.user || {
+                    name: '',
+                    email: ''
+                };
                 state.isLoggedIn = true;
                 state.failedAuth = false;
                 state.accessToken = action?.payload?.accessToken;
@@ -73,7 +79,10 @@ const slice = createSlice({
 
         builder
             .addCase(logoutAction.fulfilled, (state) => {
-                state.user = null;
+                state.user = {
+                    name: '',
+                    email: ''
+                };
                 state.isLoggedIn = false;
                 state.accessToken = '';
                 state.refreshToken = '';
@@ -81,7 +90,10 @@ const slice = createSlice({
 
         builder
             .addCase(getUser.fulfilled, (state, action) => {
-                state.user = action?.payload?.user;
+                state.user = action?.payload?.user || {
+                    name: '',
+                    email: ''
+                };
             })
             .addCase(getUser.rejected, (state) => {
                 state.isLoggedIn = false;
