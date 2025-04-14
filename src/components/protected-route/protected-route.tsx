@@ -1,7 +1,6 @@
 import {Navigate, useLocation} from 'react-router-dom';
-import {useSelector} from "react-redux";
 import {ReactNode} from "react";
-import {TReduxStore} from "../../utils/types";
+import {useAppSelector} from "../../services/store";
 
 type ProtectedRouteElementProps = {
     element: ReactNode;
@@ -9,8 +8,8 @@ type ProtectedRouteElementProps = {
 }
 
 export const ProtectedRouteElement = ({ element, anonymous = false }: ProtectedRouteElementProps) => {
-    const isLoggedIn = useSelector((store: TReduxStore) => store.auth.isLoggedIn);
-    const failedAuth = useSelector((store: TReduxStore) => store.auth.failedAuth);
+    const isLoggedIn = useAppSelector((store) => store.auth.isLoggedIn);
+    const failedAuth = useAppSelector((store) => store.auth.failedAuth);
 
     const location = useLocation();
     const from = location.state?.from || '/';

@@ -2,15 +2,14 @@ import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './style.module.css';
-import {useDispatch,useSelector} from "react-redux";
 import {loginAction} from "../../services/reducers/auth";
-import {AppDispatch, TReduxStore} from "../../utils/types";
+import {useAppDispatch, useAppSelector} from "../../services/store";
 
 export const LoginPage: React.FC = () => {
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const user = useSelector((store: TReduxStore) => store.auth.user);
+    const user = useAppSelector(store => store.auth.user);
 
     const [state, setState] = useState({
         email:'',

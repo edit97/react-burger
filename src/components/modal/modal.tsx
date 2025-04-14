@@ -7,8 +7,9 @@ import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 type ModalProps = {
     onClose: () => void;
     title?: string;
-    children: ReactNode;
+    children: ReactNode; // с PropsWithChildren выдаёт error
 };
+
 
 export const Modal: React.FC<ModalProps> = ({
                           onClose,

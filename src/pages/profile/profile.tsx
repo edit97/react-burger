@@ -1,21 +1,21 @@
 import React, {useState, useEffect, ChangeEvent, FormEvent} from "react";
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import style from "./style.module.css";
-import {useDispatch, useSelector} from "react-redux"
 import {Links} from "./links";
 import {getUser, updateUser} from "../../services/reducers/auth";
-import {AppDispatch, TReduxStore, TUser} from "../../utils/types";
+import {TUser} from "../../utils/types";
+import {useAppDispatch, useAppSelector} from "../../services/store";
 
 export const ProfilePage: React.FC = () => {
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
     const initState: TUser & { password: string } = {
         name: "",
         email: "",
         password: ""
     }
     const [state, setState] = useState(initState);
-    const user = useSelector((store: TReduxStore) => store.auth.user);
-    const accessToken = useSelector((store: TReduxStore) => store.auth.accessToken);
+    const user = useAppSelector(store => store.auth.user);
+    const accessToken = useAppSelector(store => store.auth.accessToken);
 
     useEffect(() => {
         dispatch(getUser(localStorage.getItem('accessToken')))

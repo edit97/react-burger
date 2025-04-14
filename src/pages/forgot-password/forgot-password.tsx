@@ -2,15 +2,14 @@ import React, {FormEvent, useLayoutEffect, useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {Input, Button} from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './style.module.css';
-import {useDispatch, useSelector} from "react-redux";
 import {forgotPassword} from "../../services/reducers/auth";
-import {AppDispatch, TReduxStore} from "../../utils/types";
+import {useAppDispatch, useAppSelector} from "../../services/store";
 
 export const ForgotPasswordPage = () => {
     const [email, setEmail] = useState<string>('');
     let navigate = useNavigate();
-    const dispatch = useDispatch<AppDispatch>();
-    const authorized = useSelector((store: TReduxStore) => store.auth.isLoggedIn);
+    const dispatch = useAppDispatch();
+    const authorized = useAppSelector(store => store.auth.isLoggedIn);
 
     useLayoutEffect(() => {
         if (authorized) {

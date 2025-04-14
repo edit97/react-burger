@@ -15,7 +15,7 @@ export type TIngredient = {
     image_large: string;
     __v?: number;
     productId: string;
-    // id?: string | undefined;
+    id?: string | undefined;
 }
 
 export type TUser = {

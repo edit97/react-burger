@@ -3,9 +3,9 @@ import style from './style.module.css'
 import {ConstructorElement, DragIcon} from  '@ya.praktikum/react-developer-burger-ui-components';
 import { useRef } from 'react';
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd';
-import {useDispatch} from "react-redux";
 import {deleteSelectedIngredient} from "../../services/reducers";
 import {TIngredientWithUUID} from "../../utils/types";
+import {useAppDispatch} from "../../services/store";
 
 type BurgerItemProps = {
     item: TIngredientWithUUID;
@@ -20,7 +20,7 @@ type DragItem = {
 };
 
 export const BurgerItem: FC<BurgerItemProps> = ({item, index, isLocked, handleMove}) => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
 
     const id    = item._id

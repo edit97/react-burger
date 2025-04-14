@@ -3,13 +3,13 @@ import style from './style.module.css';
 import {Button, ConstructorElement, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import {Modal} from "../modal/modal";
 import {useDrop} from 'react-dnd';
-import {useDispatch, useSelector} from 'react-redux';
 import BurgerItem from "../burger-item/burger-item";
 import {ingredientTypes} from "../../constants";
 import {clearSelectedIngredient, createOrder, moveSelectedIngredient} from "../../services/reducers";
 import {OrderDetails} from "../order-details/order-details";
 import {useNavigate} from "react-router-dom";
-import {AppDispatch, TIngredient, TReduxStore} from "../../utils/types";
+import {TIngredient} from "../../utils/types";
+import {useAppDispatch, useAppSelector} from "../../services/store";
 
 type BurgerConstructorProps = {
     onDropHandler: (item: TIngredient) => void;
@@ -21,10 +21,10 @@ type DragItem = {
 }
 
 const BurgerConstructor: React.FC<BurgerConstructorProps> = ({onDropHandler}) => {
-    const selectedIngredients = useSelector((store: TReduxStore) => store.burger.selectedIngredients);
-    const accessToken = useSelector((store: TReduxStore) => store.auth.accessToken);
+    const selectedIngredients = useAppSelector(store => store.burger.selectedIngredients);
+    const accessToken = useAppSelector(store => store.auth.accessToken);
 
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     const [modalIsActive, setModalActive] = useState(false);
@@ -88,7 +88,7 @@ const BurgerConstructor: React.FC<BurgerConstructorProps> = ({onDropHandler}) =>
                     {selectedIngredients?.filter((i:TIngredient) => i.type !== ingredientTypes.bun.key)?.map((item, i) => {
                         return (
                             <BurgerItem
-                                key={item._id}
+                                key={item.id}
                                 item={item}
                                 isLocked={false}
                                 handleMove={handleMove}

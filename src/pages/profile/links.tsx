@@ -1,16 +1,14 @@
 import style from "./style.module.css"
 import {NavLink, useNavigate} from "react-router-dom";
 import React from "react";
-import {useDispatch} from 'react-redux';
 import {logoutAction} from "../../services/reducers/auth";
-import {AppDispatch} from "../../utils/types";
+import {useAppDispatch} from "../../services/store";
 
 export const Links: React.FC = () => {
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     const handleExit = () => {
-
         dispatch(logoutAction());
         navigate({ pathname: '/login' })
         localStorage.clear()

@@ -1,13 +1,12 @@
 import React, {ChangeEvent, FormEvent, useState} from 'react';
-import {useDispatch} from 'react-redux';
 import {Link, useNavigate} from 'react-router-dom';
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './style.module.css';
 import {registerUser} from "../../services/reducers/auth";
-import {AppDispatch} from "../../utils/types";
+import {useAppDispatch} from "../../services/store";
 
 export const RegisterPage: React.FC = () => {
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({name:'',email:'',password:''});
 

@@ -2,14 +2,13 @@ import React, {useRef, useState} from 'react';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './style.module.css';
 import cs from 'classnames';
-import {useSelector} from "react-redux";
 import IngredientList from "../ingredient-list/ingredient-list";
 import {IngredientKey, ingredientTypes} from "../../constants";
-import {TReduxStore} from "../../utils/types";
+import {useAppSelector} from "../../services/store";
 
 export const BurgerIngredients: React.FC = () => {
     const [selectedIngredientType, setSelectedIngredientType] = useState('bun');
-    const ingredients = useSelector((store: TReduxStore) => store.burger.ingredients);
+    const ingredients = useAppSelector(store=> store.burger.ingredients);
 
     const wrapperRef = useRef<HTMLUListElement  | null>(null);
     const bunRef = useRef<HTMLParagraphElement | null>(null);

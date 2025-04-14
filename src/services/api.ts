@@ -2,11 +2,11 @@ import {request} from "../utils/request";
 import {IRegisterUser, TIngredient} from "../utils/types";
 
 export const fetchIngredients = () => {
-    return request<any>('/ingredients')
+    return request('/ingredients')
 };
 
 export const createOrder = async (ingredients: TIngredient[]) => {
-    return request<any>('/orders', {
+    return request('/orders', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
@@ -20,7 +20,7 @@ export const registerUser = async ({
                                        name,
                                        password,
                                    }: IRegisterUser) => {
-    return request<any>('/auth/register', {
+    return request('/auth/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -30,7 +30,7 @@ export const registerUser = async ({
 };
 
 export const forgotPassword = async ({email}: { email: string }) => {
-    return request<any>('/password-reset', {
+    return request('/password-reset', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -40,7 +40,7 @@ export const forgotPassword = async ({email}: { email: string }) => {
 };
 
 export const resetPassword = async ({password, token}: { password: string; token: string }) => {
-    return request<any>('/password-reset/reset', {
+    return request('/password-reset/reset', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -50,7 +50,7 @@ export const resetPassword = async ({password, token}: { password: string; token
 };
 
 export const loginAction = async ({password, email}: { password: string; email: string }) => {
-    return request<any>('/auth/login', {
+    return request('/auth/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -60,7 +60,7 @@ export const loginAction = async ({password, email}: { password: string; email: 
 };
 
 export const logoutAction = async () => {
-    return request<any>('/auth/logout', {
+    return request('/auth/logout', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -71,7 +71,7 @@ export const logoutAction = async () => {
     })
 };
 export const getUser = async (token: string | null) => {
-    return request<any>('/auth/user', {
+    return request('/auth/user', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
@@ -81,7 +81,7 @@ export const getUser = async (token: string | null) => {
 };
 
 export const updateUser = async ({email, name, token}: { email: string; name: string; token: string }) => {
-    return request<any>('/auth/user', {
+    return request('/auth/user', {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
@@ -92,7 +92,7 @@ export const updateUser = async ({email, name, token}: { email: string; name: st
 };
 
 export const checkAuth = async () => {
-    return request<any>('/auth/token', {
+    return request('/auth/token', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

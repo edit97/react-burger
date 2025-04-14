@@ -2,18 +2,17 @@ import React, {useLayoutEffect} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './reset-password.module.css';
-import {useDispatch, useSelector} from 'react-redux';
 import {resetPassword} from "../../services/reducers/auth";
-import {AppDispatch, TReduxStore} from "../../utils/types";
+import {useAppDispatch, useAppSelector} from "../../services/store";
 
 export const ResetPasswordPage: React.FC = () => {
     const [password, setPassword] = React.useState('');
     const [token, setToken] = React.useState('');
 
     let navigate = useNavigate();
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
 
-    const authorized = useSelector((store: TReduxStore) => store.auth.isLoggedIn);
+    const authorized = useAppSelector(store => store.auth.isLoggedIn);
 
     useLayoutEffect(() => {
         if (authorized) {

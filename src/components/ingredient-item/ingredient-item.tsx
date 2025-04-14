@@ -2,10 +2,10 @@ import {FC} from "react";
 import style from './style.module.css';
 import {CurrencyIcon, Counter} from '@ya.praktikum/react-developer-burger-ui-components';
 import {DragSourceMonitor, useDrag} from "react-dnd";
-import {useSelector} from "react-redux";
 import {useLocation, useNavigate} from "react-router-dom";
 import {ingredientTypes} from "../../constants";
-import {TIngredient, TReduxStore} from "../../utils/types";
+import {TIngredient} from "../../utils/types";
+import {useAppSelector} from "../../services/store";
 
 type IngredientItemProps = {
     data: TIngredient;
@@ -17,7 +17,7 @@ export const IngredientItem: FC<IngredientItemProps> = ({data}) => {
     const navigate = useNavigate();
     let location = useLocation();
 
-    const selectedIngredients = useSelector((store: TReduxStore) => store.burger.selectedIngredients);
+    const selectedIngredients = useAppSelector(store => store.burger.selectedIngredients);
 
 
     const [{isDrag}, dragRef] = useDrag({

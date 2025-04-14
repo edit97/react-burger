@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import style from "../modal/style.module.css";
 import {useParams} from "react-router-dom";
-import {useSelector} from "react-redux";
 import {TIngredient, TReduxStore} from "../../utils/types";
+import {useAppSelector} from "../../services/store";
 
 export const IngredientDetails: React.FC = () => {
     const params = useParams();
-    const ingredients = useSelector((store:TReduxStore) => store.burger.ingredients);
+    const ingredients = useAppSelector((store:TReduxStore) => store.burger.ingredients);
 
     const [ingredient, setIngredient] = useState<TIngredient | null>(null);
 
