@@ -1,10 +1,11 @@
 import {request} from "../utils/request";
+import {IRegisterUser, TIngredient} from "../utils/types";
 
 export const fetchIngredients = () => {
     return request('/ingredients')
 };
 
-export const createOrder = async (ingredients) => {
+export const createOrder = async (ingredients: TIngredient[]) => {
     return request('/orders', {
         method: 'POST',
         headers: {
@@ -18,43 +19,43 @@ export const registerUser = async ({
                                        email,
                                        name,
                                        password,
-                                   }) => {
+                                   }: IRegisterUser) => {
     return request('/auth/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email, name, password })
+        body: JSON.stringify({email, name, password})
     })
 };
 
-export const forgotPassword = async ({email}) => {
+export const forgotPassword = async ({email}: { email: string }) => {
     return request('/password-reset', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email })
+        body: JSON.stringify({email})
     })
 };
 
-export const resetPassword = async ({password, token}) => {
+export const resetPassword = async ({password, token}: { password: string; token: string }) => {
     return request('/password-reset/reset', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ password, token })
+        body: JSON.stringify({password, token})
     })
 };
 
-export const loginAction = async ({password, email}) => {
+export const loginAction = async ({password, email}: { password: string; email: string }) => {
     return request('/auth/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ password, email })
+        body: JSON.stringify({password, email})
     })
 };
 
@@ -69,17 +70,17 @@ export const logoutAction = async () => {
         })
     })
 };
-export const getUser = async (token) => {
+export const getUser = async (token: string | null) => {
     return request('/auth/user', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
-            'Authorization': token
+            'Authorization': token || ''
         }
     })
 };
 
-export const updateUser = async ({email, name, token}) => {
+export const updateUser = async ({email, name, token}: { email: string; name: string; token: string }) => {
     return request('/auth/user', {
         method: 'PATCH',
         headers: {
@@ -97,10 +98,10 @@ export const checkAuth = async () => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            token : localStorage.getItem('refreshToken')
+            token: localStorage.getItem('refreshToken')
         }),
     })
-        .then((res)=>{
+        .then((res) => {
             console.log(res, 'RESPONSE');
         })
 };

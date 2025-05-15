@@ -2,48 +2,56 @@ import React, {useRef, useState} from 'react';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './style.module.css';
 import cs from 'classnames';
-import {useSelector} from "react-redux";
 import IngredientList from "../ingredient-list/ingredient-list";
-import {ingredientTypes} from "../../constants";
+import {IngredientKey, ingredientTypes} from "../../constants";
+import {useAppSelector} from "../../services/store";
 
-export const BurgerIngredients = () => {
+export const BurgerIngredients: React.FC = () => {
     const [selectedIngredientType, setSelectedIngredientType] = useState('bun');
-    const ingredients = useSelector(store => store.burger.ingredients);
-    const wrapperRef = useRef(null);
-    const bunRef = useRef(null);
-    const sauceRef = useRef(null);
-    const mainRef = useRef(null);
+    const ingredients = useAppSelector(store=> store.burger.ingredients);
 
-    function filterIngredients(type) {
+    const wrapperRef = useRef<HTMLUListElement  | null>(null);
+    const bunRef = useRef<HTMLParagraphElement | null>(null);
+    const sauceRef = useRef<HTMLParagraphElement | null>(null);
+    const mainRef = useRef<HTMLParagraphElement | null>(null);
+
+    function filterIngredients(type: string) {
         return (ingredients?.length && type) ? ingredients?.filter((i) => i.type === type && i) : []
     }
 
-    function changeTab(tab) {
+    function changeTab(tab:string) {
         setSelectedIngredientType(tab);
         const element = document.getElementById(tab);
         if (element) element.scrollIntoView({behavior: "smooth"});
     }
 
     const handleScroll = () => {
-        if (wrapperRef?.current) {
-            const bunDistance = Math.abs(wrapperRef?.current?.getBoundingClientRect()?.top - bunRef?.current?.getBoundingClientRect()?.top)
-            const sauceDistance = Math.abs(wrapperRef.current.getBoundingClientRect().top - sauceRef.current.getBoundingClientRect().top)
-            const mainDistance = Math.abs(wrapperRef.current.getBoundingClientRect().top - mainRef.current.getBoundingClientRect().top)
-            const minDistance = Math.min(bunDistance, sauceDistance, mainDistance);
-            const currentTab = minDistance === bunDistance ? ingredientTypes.bun.key : minDistance === sauceDistance
-                ? ingredientTypes.sauce.key : ingredientTypes.main.key;
+        if (wrapperRef.current && bunRef.current && sauceRef.current && mainRef.current) {
+            const wrapperTop = wrapperRef.current.getBoundingClientRect().top;
+            const bunDistance = Math.abs(wrapperTop - bunRef.current.getBoundingClientRect().top);
+            const sauceDistance = Math.abs(wrapperTop - sauceRef.current.getBoundingClientRect().top);
+            const mainDistance = Math.abs(wrapperTop - mainRef.current.getBoundingClientRect().top);
 
-            setSelectedIngredientType(prevState => (currentTab === prevState.current ? prevState.current : currentTab))
+            const minDistance = Math.min(bunDistance, sauceDistance, mainDistance);
+            const currentTab =
+                minDistance === bunDistance
+                    ? ingredientTypes.bun.key
+                    : minDistance === sauceDistance
+                        ? ingredientTypes.sauce.key
+                        : ingredientTypes.main.key;
+
+            if (currentTab !== selectedIngredientType) {
+                setSelectedIngredientType(currentTab);
+            }
         }
     }
-
 
     return (
         <div className={style['ingredient-list']}>
             <h2 className={cs(style['ingredients-title'], 'pt-10 pb-5')}>
                 Соберите бургер</h2>
             <div className={`${style['burger-ingredients-tabs']} custom-scroll`}>
-                {Object.keys(ingredientTypes)?.map((type) => (
+                {(Object.keys(ingredientTypes) as IngredientKey[])?.map((type) => (
                     <Tab
                         key={type}
                         active={selectedIngredientType === type}

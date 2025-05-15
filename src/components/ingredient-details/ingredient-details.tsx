@@ -1,20 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import style from "../modal/style.module.css";
 import {useParams} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {TIngredient, TReduxStore} from "../../utils/types";
+import {useAppSelector} from "../../services/store";
 
-export const IngredientDetails = () => {
+export const IngredientDetails: React.FC = () => {
     const params = useParams();
-    const ingredients = useSelector(store => store.burger.ingredients);
+    const ingredients = useAppSelector((store:TReduxStore) => store.burger.ingredients);
 
-    const [ingredient, setIngredient] = useState(false);
+    const [ingredient, setIngredient] = useState<TIngredient | null>(null);
 
     useEffect(() => {
-        console.log('ingredient', ingredient);
-        console.log('params', params);
-        setIngredient(
-            params?.id && ingredients.find(i => i._id === params.id));
-    }, [ ingredients]);
+        if (params?.id && ingredients?.length > 0) {
+            const found = ingredients.find((i: TIngredient) => i._id === params?.id) || null;
+            setIngredient(found);
+        }
+    }, [ ingredients, params?.id]);
 
     return (
         ingredient && <div className={style.modal_details}>

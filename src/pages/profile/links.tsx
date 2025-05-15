@@ -1,11 +1,11 @@
 import style from "./style.module.css"
 import {NavLink, useNavigate} from "react-router-dom";
 import React from "react";
-import {useDispatch} from 'react-redux';
 import {logoutAction} from "../../services/reducers/auth";
+import {useAppDispatch} from "../../services/store";
 
-export function Links() {
-    const dispatch = useDispatch();
+export const Links: React.FC = () => {
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     const handleExit = () => {

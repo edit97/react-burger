@@ -1,10 +1,11 @@
 import React from 'react';
 import style from '../modal/style.module.css';
 import img_success from '../../images/success.svg';
-import {useSelector} from "react-redux";
+import {TReduxStore} from "../../utils/types";
+import {useAppSelector} from "../../services/store";
 
-export const OrderDetails = () => {
-	const order = useSelector(state => state.order);
+export const OrderDetails: React.FC = () => {
+	const order = useAppSelector((state: TReduxStore) => state.order);
 
 	return(
 		<div className={style.order_details}>

@@ -41,7 +41,6 @@ const slice = createSlice({
             state.selectedIngredients = ingredients;
         },
         clearSelectedIngredient(state) {
-            console.log('clearSelectedIngredient');
             state.selectedIngredients = [];
         },
     },
